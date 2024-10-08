@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en">
+
+{% load static %}
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="cache-control" content="no-cache" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/coco.css' %}">
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <!-- Ecahrt -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.1.0/echarts-en.js"></script>
+    <!-- <script src="/Static/js/echarts-min.js"></script> -->
+    </script>
+    <!-- D3.js -->
+    <!-- <script src="//d3js.org/d3.v4.min.js"></script> -->
+    <script>
+    function click_Select_Corr_Model() {
+        Temp_Element = document.getElementById('ID_Submit_Source');
+        Temp_Element.value = 'Select_CM'
+        Temp_Element = document.getElementById("ID_Form_Parameter_Selection");
+        Temp_Element.name = "Name_Form_Select_CM";
+        Temp_Element.submit()
+    }
+    function click_BTN_PS_HVS() {
+        Temp_Element = document.getElementById('ID_Submit_Source');
+        Temp_Element.value = 'Select_PS_HVS'
+        Temp_Element = document.getElementById("ID_Form_Parameter_Selection");
+        Temp_Element.name = "Name_Form_Select_CM";
+        Temp_Element.submit()
+    }
+    function click_BTN_Simu() {
+        Temp_Element = document.getElementById('ID_Submit_Source');
+        Temp_Element.value = 'Click_BTN_Simu'
+        Temp_Element = document.getElementById("ID_Form_Parameter_Selection");
+        Temp_Element.name = "Name_Form_Select_CM";
+        Temp_Element.submit()
+    }
+    console.log("Hello, world. Check my github: https://github.com/wang19891218")
+    </script>
+    <!-- Matomo -->
+    <script type="text/javascript">
+          var _paq = window._paq = window._paq || [];
+            /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+              _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+  _paq.push(["setCookieDomain", "*.windsimu.app.waecoco.com"]);
+  _paq.push(["setDomains", ["*.windsimu.app.waecoco.com","*.windsimu.app.waecoco.com"]]);
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+          var u="//matomo.waecoco.com/";
+          _paq.push(['setTrackerUrl', u+'matomo.php']);
+          _paq.push(['setSiteId', '2']);
+          var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+          g.type='text/javascript'; g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+        })();
+    </script>
+    <noscript><p><img src="//matomo.waecoco.com/matomo.php?idsite=2&amp;rec=1" style="border:0;" alt="" /></p></noscript>
+    <!-- End Matomo Code -->
+    <script data-host="https://microanalytics.io" data-dnt="false" src="https://microanalytics.io/js/script.js" id="ZwSg9rf6GA" async defer></script>
+    <title>Wind field simulation</title>
+</head>
+<body>
+<div class="head-banner">    
+    <h1 class="display-2 head-banner-text"><a href="https://scholar.google.com/citations?user=RCFLYL0AAAAJ&hl=en" target="_blank">Haifeng Wang</a></h1>
+</div>
+<div class="container">    
+    <p class="text-primary pt-0">For details, please reference our paper: <a href="https://ascelibrary.org/doi/abs/10.1061/%28ASCE%29EM.1943-7889.0001897" target="_blank">Fast Hilbert–Wavelet Simulation of Nonstationary Wind Field Using 
+    Noniterative Simultaneous Matrix Diagonalization</a></p>
+    <p class="text-primary pt-0"><a href="https://github.com/wang19891218/wind-field-simulation" target="_blank">GitHub</a></p>
+    <h1 class="text-primary pt-0"><a href="https://windsimu.app.hfwang.dev/">Wind field model</a></h1>
+    <div class="border">
+    <form action ="" method="post" name = "Name_Form_Original"  id = "ID_Form_Parameter_Selection">
+    <div class="row">
+        <input type="hidden" name = "Name_Submit_Source" value = 'Value_Submit_Source' id = 'ID_Submit_Source'>
+        <input type="hidden" name = "Name_Para_Max_Locations" value = {{Parameter_Max_Locations}} id = 'ID_Para_Max_Locations'>
+        <div class="col-sm">
+                <h3 class="text-secondary">Parameter setting</h3>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm">
+                            <label for="ID_Input_Corr_Type">
+                                Correlation model
+                            </label>
+                            <select 
+                                class="form-control" 
+                                id="ID_Select_CM" 
+                                name = "Name_Select_CM"
+                                onchange="click_Select_Corr_Model()"
+                                {{ Status_Select_CM }}
+                                >
+                                {% for Str_CM_Value, Str_Status, Str_CM_Display in List_CM%}
+                                    <option value={{Str_CM_Value}} {{Str_Status}}>{{Str_CM_Display}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row" {{Status_PS_Row_H}}>
+                        <div class="col-sm-6">
+                            <label for="ID_Input_HS">Horizontal Scale (m)</label>
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                id="ID_Input_HS" 
+                                name = "Name_Input_HS"
+                                value={{Value_HS}} 
+                                {{Status_PS_Row_H_Col_HS}}
+                                onChange="update_for_hor_ver_parameter_change();">
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="ID_Select_HL" >Horizontal locations</label>
+                            <select 
+                                class="form-control" 
+                                id="ID_Select_HL" 
+                                name = "Name_Select_HL"
+                                onChange="update_for_hor_ver_parameter_change();"
+                                {{Status_PS_Row_H_Col_HL}}>
+                                {% for Value_HL in List_Select_HL%}
+                                    <option value={{Value_HL}}>{{Value_HL}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row" {{Status_PS_Row_V}}>
+                        <div class="col-sm-6">
+                            <label for="ID_Input_VS">Vertical Scale (m)</label>
+                            <input type="text" class="form-control" 
+                                id="ID_Input_VS" 
+                                value={{Value_VS}} 
+                                name = "Name_Input_VS" 
+                                {{Status_PS_Row_V_Col_VS}}
+                                onChange="update_for_hor_ver_parameter_change();">
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="ID_Select_VL">Vertical locations</label>
+                            <select class="form-control" 
+                                id="ID_Select_VL" 
+                                onChange="update_for_hor_ver_parameter_change();"
+                                name = "Name_Select_VL" 
+                                {{Status_PS_Row_V_Col_VL}}>
+                            {% for Value_VL in List_Select_VL%}
+                                <option value={{Value_VL}} >{{Value_VL}}</option>
+                            {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class = 'row' {{Status_PS_Row_SF}}>
+                        <div class="col-sm-12">
+                            <label for="ID_Select_SF">Sampling frequency (Hz)</label>
+                            <select class="form-control" 
+                                id="ID_Select_SF" 
+                                name = "Name_Select_SF" 
+                                {{Status_Select_SF}}>
+                                {% for Value_SF in List_Value_SF%}
+                                    <option value={{Value_SF}}>{{Value_SF}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row" {{Status_PS_Row_BTN_PS_HVS}}>
+                        <!-- Button next parameter setting horizontal vertical sampling -->
+                            <div class="col-sm-12 pt-5">     
+                                    {% csrf_token %}
+                                    <button
+                                        type = "button"
+                                        class="btn btn-primary btn-block" 
+                                        id = "ID_Btn_PS_HVS" 
+                                        name="Name_Btn_PS_HVS"
+                                        onclick="click_BTN_PS_HVS();"
+                                        {{Status_Btn_PS_HVS}}>
+                                            Next
+                                    </button>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        <div class="col-sm">
+            <!-- <h3 class="text-secondary">Simulated locations</h3>
+            <div class="img-fluid">
+            <iframe frameborder="0" height=250 scrolling="no" src="//plot.ly/~wang19891218/2.embed"></iframe>
+            </div> -->
+            <!-- <img class="img-fluid" src="{% static "Figure_1_Simulation_Location.png" %}" alt="Simulated locations"> -->
+            <h3 class="text-secondary">Simulated locations</h3>
+            <div class="img-fluid"  {{Status_Fig_SL}}>
+            <!-- <iframe frameborder="0" height = 250 scrolling="no" src="//plot.ly/~wang19891218/2.embed"></iframe> -->
+                <div class="img-fluid" id="JQ_Test_P_1" style = "height:300px; "></div>
+            <!-- <canvas id="ID_Canvas_1" width="400" height="300"></canvas> -->
+            </div>
+        </div>
+        <div class="col-sm">
+            <h3 class="text-secondary">Target correlation</h3>
+            <img class="img-fluid" 
+                src= {{Str_Fig_6_Corr_Path}}
+                alt="Target Hilbert spectrum"
+                {{Status_Fig_TC}}>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+                <!-- <div class="row" {{Status_PS_Row_Upload}}> -->
+                    <!-- <div class="col-sm-12"> -->
+                        <!-- <label for="ID_Select_HSM">Hilbert pectrum model</label> -->
+                        <!-- <select class="form-control" id="ID_Select_HSM"  -->
+                            <!-- name = "Name_Select_HSM" disabled> -->
+                                <!-- <option value = "Value_HS_1">Default</option> -->
+                        <!-- </select> -->
+                        <!-- {% block content %} -->
+                        <!-- <form method="post" enctype="multipart/form-data"> -->
+                          <!-- {% csrf_token %} -->
+                          <!-- <input class="form-control-file col-sm-6 float-left" type="file" name="Input_Upload_File"> -->
+                          <!-- <button class="btn btn-primary btn-block col-sm-6" type="submit">Upload</button> -->
+                        <!-- </form> -->
+                        <!-- {% if uploaded_file_url %} -->
+                        <!-- <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p> -->
+                        <!-- {% endif %} -->
+                      <!-- {% endblock %} -->
+                    <!-- </div> -->
+                <!-- </div> -->
+                <div class="row" {{Status_PS_Row_HSM}}>
+                    <div class="col-sm-12">
+                        <label for="ID_Select_HSM">Hilbert pectrum model</label>
+                        <select class="form-control" id="ID_Select_HSM" 
+                            name = "Name_Select_HSM" disabled>
+                                <option value = "Value_HS_1">Default</option>
+                                <!-- <option>Model 2</option> -->
+                                <!-- <option>Model 3</option> -->
+                                <!-- <option>Model 4</option> -->
+                        </select>
+                    </div>
+                </div>
+                <div class="row" {{Status_PS_Row_TVMM}}>
+                    <div class="col-sm-12">
+                        <label for="ID_Select_TVMM">Time-varying mean model</label>
+                        <select class="form-control" id="ID_Select_TVMM" 
+                            name = "Name_Select_TVMM" disabled>
+                                <option value = "Value_TVMM_1">Default</option>
+                                <!-- <option>Model 2</option> -->
+                                <!-- <option>Model 3</option> -->
+                                <!-- <option>Model 4</option> -->
+                        </select>
+                    </div>
+                </div>
+                <div class="row" {{Status_PS_Row_SBTN}}>
+                    <div class="col-sm-12 pt-5">     
+                            {% csrf_token %}
+                            <!-- {{ form.as_p}} -->
+                            <!-- {{ unit}} -->
+                            <button
+                                type = "button"
+                                class="btn btn-primary btn-block" 
+                                id = "ID_Btn_Simu" 
+                                value="Click_Simu" 
+                                name="Name_Btn_Simu"
+                                onclick="click_BTN_Simu();">
+                                    Simulate wind field
+                            </button>
+                    </div>
+                </div>
+            </div>
+    
+        <div class="col-sm">
+            <h3 class="text-secondary">Time-varying mean</h3>
+            <img class="img-fluid" 
+                src="{% static 'Figure_7_TV_Mean.png' %}" 
+                alt="Simulated locations"
+                {{Status_Fig_TVM}}>
+        </div>
+        <div class="col-sm">
+            <dev class = "row"></dev>
+            <h3 class="text-secondary">Hilbert spectrum model</h3>
+            <img class="img-fluid" 
+                src="{% static 'Figure_2_HS.png' %}" 
+                alt="Target Hilbert spectrum"
+                {{Status_Fig_HSM}}>
+        </div>
+    </div>
+    </form>
+    </div>
+
+    <h1 class="text-primary pt-5" {{Status_Validation_Time_Domain}}>Simulation result</h1>
+    <div class="row border" {{Status_Validation_Time_Domain}}>
+        <div class="col-sm">
+            <h3 class="text-secondary">All simulations</h3>
+            <img class="img-fluid" src="{% static "Figure_5_All_Simu.png" %}" alt="Simulated locations">
+        </div>
+        <div class="col-sm">
+            <h3 class="text-secondary">Selected time historiy</h3>
+            <img class="img-fluid" src="{% static "Figure_3_History.png" %}" alt="Target Hilbert spectrum">
+        </div>
+        <div class="col-sm">
+            <h3 class="text-secondary">Display setting</h3>
+            <form action = "" method = "post">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="ID_Show_HI">Horizontal index</label>
+                            <select class="form-control" id="ID_Show_HI" disabled>
+                                {% for Int_Option in List_Option_HI%}
+                                <option value = "{{Int_Option}}">Location {{Int_Option}}</option>
+                                {% endfor%}
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="ID_Show_VI">Vertical index</label>
+                            <select class="form-control" 
+                                id="ID_Show_VI" 
+                                name = "Name_Show_VI" 
+                                {{Status_Option_VI}}>
+                                    {% for Int_Option in List_Option_VI%}
+                                        <option value="{{Int_Option}}">Location {{Int_Option}}</option>
+                                    {% endfor%}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row pt-3">
+                        <div class="col-sm-12">
+                            {% csrf_token %}
+                            <button 
+                                type="submit"
+                                id = 'ID_Btn_Show'
+                                name = "Name_Btn_Show"
+                                value = "Click_Show"
+                                class="btn btn-primary btn-block"
+                                {{Status_Show_Simu_Sele}}>
+                                    Show simulation of selected location
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row pt-3">
+                        <div class="col-sm-12">
+                            <a 
+                                class="btn btn-primary btn-block"
+                                href="Download"  target="_blank">
+                                        Download simulation file
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row pt-3">
+                        <div class="col-sm-12">
+                            <a 
+                                class="btn btn-primary btn-block"
+                                href="http://windsimu.app.hfwang.dev">
+                                       Restart 
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <h1 class="text-primary pt-5" {{Status_Validation}}>Simulation validation</h1>
+    <div class="row border" {{Status_Validation}}>
+        <div class="col-sm">
+            <h3 class="text-secondary">Hilbert spectrum</h3>
+            <img class="img-fluid" src="{% static "Figure_4_HS_Simu.png" %}" alt="Simulated locations">
+        </div>
+        <div class="col-sm">
+            <h3 class="text-secondary">Correlation coefficient</h3>
+            <img class="img-fluid" src="{% static "Figure_6_Corr_Sim.png" %}" alt="Target Hilbert spectrum">
+        </div>
+        <div class="col-sm">
+            <form>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="Index_Horzontal">Wavelet scale</label>
+                            <select class="form-control" id="Index_Horzontal" disabled>
+                                <option value = 3>3</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="Index_Horzontal">Center freuqnecy </label>
+                            <input type="text" class="form-control" id="usr" placeholder="0.05 Hz" disabled>
+                        </div>
+                    </div>
+                    <div class="row pt-3">
+                        <div class="col-sm-12">
+                            <button type="button" 
+                                class="btn btn-primary btn-block"
+                                disabled>
+                                Show simulation correlation coefficient 
+                                of the selected scale
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="/static/js/coco.js"></script></script>
+</body>
+</html>
